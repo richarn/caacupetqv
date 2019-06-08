@@ -39,7 +39,7 @@ class PlantasController extends Controller {
             $randomSring = str_random(20);
             $extension = $request->imagen->extension();
             $nombreImagen = $randomSring.'.'.$extension;
-            $imagen->move('images', $nombreImagen);
+            $imagen->move('api/images', $nombreImagen);
             $planta->imagen = $nombreImagen;
         }
 
@@ -90,7 +90,7 @@ class PlantasController extends Controller {
                     $extension = $request->imagen->extension();
                     $nombreImagen = $randomSring.'.'.$extension;
 
-                    $imagen->move('images', $nombreImagen);
+                    $imagen->move('api/images', $nombreImagen);
                     $planta->imagen = $nombreImagen;
                 }
             }

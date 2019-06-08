@@ -13,3 +13,4 @@ yarn-error.log
 .history
 /database/migrations
 /public/images
+/public/api/images
