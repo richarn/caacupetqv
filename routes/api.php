@@ -23,4 +23,6 @@ Route::post('login', 'UserController@authenticate');
 Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('user', 'UserController@getAuthenticatedUser');
     Route::resource('plantas', 'PlantasController');
+    Route::resource('zonas', 'ZonasController');
+    Route::resource('publicaciones', 'PlantacionesController');
 });
