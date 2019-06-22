@@ -5,11 +5,12 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 class Zona extends Model {
-    protected $table = 'zona';
+    protected $table = 'zonas';
     protected $primaryKey = 'idZona';
-    public $timestamps = false;
+    public $timestamps = true;
     protected $fillable = [
-    	'descripcion'
+        'nombre',
+        'estado'
     ];
 
     protected $guarded = [];

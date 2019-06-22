@@ -6,11 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Publicaciones extends Model {
     protected $table = 'publicaciones';
-    public $timestamps = false;
+    protected $primaryKey = 'idPublicacion';
+    public $timestamps = true;
     protected $fillable = [
     	'idUsuario',
     	'idPlanta',
     	'idZona',
+    	'descripcion',
     	'fecha',
     	'estado'
     ];
@@ -26,6 +28,6 @@ class Publicaciones extends Model {
     }
 
     function zonas() {
-    	return $this->belongsToMany('App\Zona');
+    	return $this->belongsToMany('App\Zonas');
     }
 }
