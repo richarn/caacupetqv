@@ -13,7 +13,6 @@ class Publicaciones extends Model {
     	'idPlanta',
     	'idZona',
     	'descripcion',
-    	'fecha',
     	'estado'
     ];
 
