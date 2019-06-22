@@ -49,7 +49,7 @@ class PlantasController extends Controller {
     }
 
     public function show($id) {
-        $planta = Plantas::findOrFail($id);
+        $planta = Plantas::find($id);
         
         if ($planta) {
             $data = [
@@ -74,7 +74,7 @@ class PlantasController extends Controller {
         $descripcion = $request->get("descripcion");
         $imagen = $request->file("imagen");
 
-        $planta = Plantas::findOrFail($id);
+        $planta = Plantas::find($id);
         if ($planta) {
             $planta->nombre = $nombre;
             $planta->descripcion = $descripcion;
@@ -96,17 +96,23 @@ class PlantasController extends Controller {
             }
 
             if ($planta->update()) return response()->json(200);
+
+            return response()->json(500);
         }
 
-        return response()->json(500);
+        return response()->json(404);
     }
 
 
     public function destroy($id) {
-        $planta = Plantas::findOrFail($id);
-        $planta->estado = 0;
-        if ($planta->update()) return response()->json(200);
+        $planta = Plantas::find($id);
+        
+        if ($planta) {
+            $planta->estado = 0;
+            if ($planta->update()) return response()->json(200);
+            return response()->json(500);
+        }
 
-        return response()->json(500);
+        return response()->json(404);
     }
 }

@@ -55,16 +55,24 @@ class ZonaController extends Controller {
             $zona->nombre = $nombre;
 
             if ($zona->update()) return response()->json(200);
+
+            return response()->json(500);
         }
 
-        return response()->json(500);
+        return response()->json(404);
     }
 
     public function destroy($id) {
         $zona = Zonas::findOrFail($id);
-        $zona->estado = 0;
-        if ($zona->update()) return response()->json(200);
 
-        return response()->json(500);
+        if ($zona) {
+            $zona->estado = 0;
+    
+            if ($zona->update()) return response()->json(200);
+
+            return response()->json(500);
+        }
+
+        return response()->json(404);
     }
 }

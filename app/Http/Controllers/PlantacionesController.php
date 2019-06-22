@@ -36,7 +36,7 @@ class PlantacionesController extends Controller {
     }
 
     public function show($id) {
-        $plantacion = Publicaciones::findOrFail($id);
+        $plantacion = Publicaciones::find($id);
         
         if ($plantacion) {
             $data = [
@@ -62,7 +62,7 @@ class PlantacionesController extends Controller {
         $idZona = $request->get("idZona");
         $descripcion = $request->get("descripcion");
 
-        $plantacion = Publicaciones::findOrFail($id);
+        $plantacion = Publicaciones::find($id);
 
         if ($plantacion) {
             $plantacion->idPlanta = $idPlanta;
@@ -74,15 +74,20 @@ class PlantacionesController extends Controller {
             return response()->json(500);
         }
 
-        return response()->json(500);
+        return response()->json(404);
     }
 
     public function destroy($id) {
-        $plantacion = Publicaciones::findOrFail($id);
-        $plantacion->estado = 0;
+        $plantacion = Publicaciones::find($id);
 
-        if ($plantacion->update()) return response()->json(200);
+        if ($plantacion) {
+            $plantacion->estado = 0;
+    
+            if ($plantacion->update()) return response()->json(200);
 
-        return response()->json(500);
+            return response()->json(500);
+        }
+
+        return response()->json(404);
     }
 }
