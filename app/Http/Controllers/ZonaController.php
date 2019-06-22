@@ -3,75 +3,68 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Zonas;
 
 class ZonaController extends Controller {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index() {
-        //
+        $zonas = Zonas::get();
+
+        return response()->json($zonas, 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create() {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request) {
-        //
+        $nombre = $request->get("nombre");
+
+        $zona = new Zonas();
+        $zona->nombre = $nombre;
+
+        if ($zona->save()) return response()->json(200);
+
+        return response()->json(500);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id) {
+        $zona = Zonas::findOrFail($id);
+        
+        if ($zona) {
+            $data = [
+                'idZona' => $zona->idzona,
+                'nombre' => $zona->nombre,
+                'estado' => $zona->estado
+            ];
+            return response()->json($data);
+        }
+
+        return response()->json(404);
+    }
+
+    public function edit($id) {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id) {
-        //
+        $nombre = $request->get("nombre");
+
+        $zona = Zonas::findOrFail($id);
+        if ($zona) {
+            $zona->nombre = $nombre;
+
+            if ($zona->update()) return response()->json(200);
+        }
+
+        return response()->json(500);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id) {
-        //
+        $zona = Zonas::findOrFail($id);
+        $zona->estado = 0;
+        if ($zona->update()) return response()->json(200);
+
+        return response()->json(500);
     }
 }
