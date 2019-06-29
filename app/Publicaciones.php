@@ -18,15 +18,15 @@ class Publicaciones extends Model {
 
     protected $guarded = [];
 
-    function usuarios() {
-    	return $this->belongsToMany('App\User');
+    function usuario() {
+    	return $this->belongsTo('App\User', 'idUsuario');
     }
 
-    function plantas() {
-    	return $this->belongsToMany('App\Plantas');
+    function planta() {
+    	return $this->belongsTo('App\Plantas', 'idPlanta');
     }
 
-    function zonas() {
-    	return $this->belongsToMany('App\Zonas');
+    function zona() {
+    	return $this->belongsTo('App\Zonas', 'idZona');
     }
 }

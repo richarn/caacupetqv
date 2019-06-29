@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Zonas;
 
-class ZonaController extends Controller {
+class ZonasController extends Controller {
     
     public function index() {
         $zonas = Zonas::get()->where('estado', '=', 1);
@@ -33,7 +33,7 @@ class ZonaController extends Controller {
         
         if ($zona) {
             $data = [
-                'idZona' => $zona->idzona,
+                'idZona' => $zona->idZona,
                 'nombre' => $zona->nombre,
                 'estado' => $zona->estado
             ];

@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Zona extends Model {
+class Zonas extends Model {
     protected $table = 'zonas';
     protected $primaryKey = 'idZona';
     public $timestamps = true;

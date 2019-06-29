@@ -9,9 +9,20 @@ use Carbon\Carbon;
 class PlantacionesController extends Controller {
 
     public function index() {
-        $plantaciones = Publicaciones::get()->where('estado', '=', 1);
+        $plantaciones = Publicaciones::where('estado', '=', 1)->get();
 
-        return response()->json($plantaciones, 200);
+        $result = [];
+        foreach ($plantaciones as $plantacion) {
+            array_push($result, [
+                'usuario' => $plantacion->usuario,
+                'planta' => $plantacion->planta,
+                'zona' => $plantacion->zona,
+                'descripcion' => $plantacion->descripcion,
+                'estado' => $plantacion->estado,
+            ]);
+        }
+
+        return response()->json($result, 200);
     }
 
     public function create() {
@@ -40,9 +51,9 @@ class PlantacionesController extends Controller {
         
         if ($plantacion) {
             $data = [
-                'idUsuario' => $plantacion->idUsuario,
-                'idPlanta' => $plantacion->idPlanta,
-                'idZona' => $plantacion->idZona,
+                'usuario' => $plantacion->usuario,
+                'planta' => $plantacion->planta,
+                'zona' => $plantacion->zona,
                 'descripcion' => $plantacion->descripcion,
                 'estado' => $plantacion->estado
             ];
