@@ -26,3 +26,5 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::resource('zonas', 'ZonasController');
     Route::resource('publicaciones', 'PlantacionesController');
 });
+
+Route::get('plantas', 'PlantasController@index');
