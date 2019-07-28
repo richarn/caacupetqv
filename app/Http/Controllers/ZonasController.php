@@ -8,7 +8,7 @@ use App\Zonas;
 class ZonasController extends Controller {
     
     public function index() {
-        $zonas = Zonas::get()->where('estado', '=', 1);
+        $zonas = Zonas::where('estado', '=', 1)->get();
 
         return response()->json($zonas, 200);
     }
@@ -29,7 +29,7 @@ class ZonasController extends Controller {
     }
 
     public function show($id) {
-        $zona = Zonas::findOrFail($id);
+        $zona = Zonas::find($id);
         
         if ($zona) {
             $data = [
@@ -50,7 +50,7 @@ class ZonasController extends Controller {
     public function update(Request $request, $id) {
         $nombre = $request->get("nombre");
 
-        $zona = Zonas::findOrFail($id);
+        $zona = Zonas::find($id);
         if ($zona) {
             $zona->nombre = $nombre;
 
@@ -63,7 +63,7 @@ class ZonasController extends Controller {
     }
 
     public function destroy($id) {
-        $zona = Zonas::findOrFail($id);
+        $zona = Zonas::find($id);
 
         if ($zona) {
             $zona->estado = 0;

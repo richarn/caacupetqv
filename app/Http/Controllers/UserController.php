@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Roles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -36,15 +37,17 @@ class UserController extends Controller {
             return response()->json($validator->errors()->toJson(), 400);
         }
 
+        $role = Roles::where('flag', '=', 'n')->first();
         $user = User::create([
             'name' => $request->get('name'),
             'email' => $request->get('email'),
-            'password' => Hash::make($request->get('password')),
+            'role' => $role->idRole,
+            'password' => Hash::make($request->get('password'))
         ]);
 
         $token = JWTAuth::fromUser($user);
 
-        return response()->json(compact('user','token'),201);
+        return response()->json(compact('token'), 201);
     }
 
     public function getAuthenticatedUser() {
@@ -52,6 +55,15 @@ class UserController extends Controller {
 
             if (! $user = JWTAuth::parseToken()->authenticate()) {
                 return response()->json(['user_not_found'], 404);
+            } else {
+                $user = [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'image' => $user->image,
+                    'estado' => $user->estado,
+                    'role' => $user->roles
+                ];
             }
 
         } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
