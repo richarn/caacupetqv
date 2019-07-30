@@ -82,4 +82,45 @@ class UserController extends Controller {
 
         return response()->json(compact('user'));
     }
+
+    public function userList() {
+        $user = JWTAuth::parseToken()->authenticate();
+        if ($user && $user->roles->flag == 'a') {
+            $users = User::where('id', '<>', $user->id)->where('estado', '=', '1')->get();
+            $data = [];
+            foreach ($users as $temp) {
+                array_push($data, [
+                    'id' => $temp->id,
+                    'name' => $temp->name,
+                    'email' => $temp->email,
+                    'image' => $temp->image,
+                    'role' => $temp->roles,
+                    'estado' => $temp->estado
+                ]);
+            }
+            return response()->json($data);
+        }
+        return response()->json(401);
+    }
+
+    public function deleteUser($id) {
+        $user = JWTAuth::parseToken()->authenticate();
+        if ($user && $user->roles->flag == 'a') {
+            $find = User::where('id', '=', $id);
+            if ($find) {
+                $find->estado = 0;
+                if ($find->update()) return response()->json(200);
+                return response()->json(500);
+            }
+            return response()->json(404);
+        }
+        return response()->json(401);
+    }
+
+    public function validateEmail(Request $request) {
+        $email = $request->get('email');
+        $find = User::where('email', '=', $email)->first();
+        if ($find) return response()->json(200);
+        return response()->json(404);
+    }
 }

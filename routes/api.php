@@ -22,6 +22,8 @@ Route::post('login', 'UserController@authenticate');
 
 Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('user', 'UserController@getAuthenticatedUser');
+    Route::get('user/list', 'UserController@userList');
+    Route::delete('user/{id}', 'UserController@deleteUser');
     Route::resource('plantas', 'PlantasController');
     Route::resource('zonas', 'ZonasController');
     Route::resource('publicaciones', 'PlantacionesController');
@@ -29,3 +31,4 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
 Route::resource('roles', 'RolesController');
 Route::get('plantas', 'PlantasController@index');
+Route::post('validate/email', 'UserController@validateEmail');
