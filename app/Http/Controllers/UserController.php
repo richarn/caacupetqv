@@ -87,18 +87,10 @@ class UserController extends Controller {
         $user = JWTAuth::parseToken()->authenticate();
         if ($user && $user->roles->flag == 'a') {
             $users = User::where('id', '<>', $user->id)->where('estado', '=', '1')->paginate(20);
-            $data = [];
-            foreach ($users as $temp) {
-                array_push($data, [
-                    'id' => $temp->id,
-                    'name' => $temp->name,
-                    'email' => $temp->email,
-                    'image' => $temp->image,
-                    'role' => $temp->roles,
-                    'estado' => $temp->estado
-                ]);
-            }
-            return response()->json($data);
+            
+            foreach ($users as $temp) { $temp->roles; }
+
+            return response()->json($users);
         }
         return response()->json(401);
     }
