@@ -8,7 +8,7 @@ use App\Roles;
 class RolesController extends Controller {
     
     public function index() {
-        $roles = Roles::where('estado', '=', 1)->get();
+        $roles = Roles::where('estado', '=', 1)->paginate(20);
         return response()->json($roles, 200);
     }
 

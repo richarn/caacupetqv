@@ -9,7 +9,7 @@ use Carbon\Carbon;
 class PlantacionesController extends Controller {
 
     public function index() {
-        $plantaciones = Publicaciones::where('estado', '=', 1)->get();
+        $plantaciones = Publicaciones::where('estado', '=', 1)->paginate(20);
 
         $result = [];
         foreach ($plantaciones as $plantacion) {

@@ -8,7 +8,7 @@ use App\Zonas;
 class ZonasController extends Controller {
     
     public function index() {
-        $zonas = Zonas::where('estado', '=', 1)->get();
+        $zonas = Zonas::where('estado', '=', 1)->paginate(20);
 
         return response()->json($zonas, 200);
     }

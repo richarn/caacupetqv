@@ -10,7 +10,7 @@ class PlantasController extends Controller {
     public function index(Request $request) {
         // if (!$request->ajax()) return redirect('/');
 
-        $plantas = Plantas::where('estado', '=', 1)->get();
+        $plantas = Plantas::where('estado', '=', 1)->paginate(20);
 
         return response()->json($plantas, 200);
     }
