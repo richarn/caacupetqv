@@ -27,8 +27,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::resource('plantas', 'PlantasController');
     Route::resource('zonas', 'ZonasController');
     Route::resource('publicaciones', 'PlantacionesController');
+    Route::resource('roles', 'RolesController');
 });
 
-Route::resource('roles', 'RolesController');
 Route::get('plantas', 'PlantasController@index');
 Route::post('validate/email', 'UserController@validateEmail');

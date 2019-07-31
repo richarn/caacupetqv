@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Roles;
+use JWTAuth;
 
 class RolesController extends Controller {
     
@@ -17,16 +18,20 @@ class RolesController extends Controller {
     }
 
     public function store(Request $request) {
-        $nombre = $request->get("nombre");
-        $flag = $request->get("flag");
+        $user = JWTAuth::parseToken()->authenticate();
+        if ($user && $user->roles->flag == 'a') {
+            $nombre = $request->get("nombre");
+            $flag = $request->get("flag");
 
-        $role = new Roles();
-        $role->nombre = $nombre;
-        $role->flag = $flag;
+            $role = new Roles();
+            $role->nombre = $nombre;
+            $role->flag = $flag;
 
-        if ($role->save()) return response()->json(200);
+            if ($role->save()) return response()->json(200);
 
-        return response()->json(500);
+            return response()->json(500);
+        }
+        return response()->json(401);
     }
 
     public function show($id) {
@@ -50,31 +55,39 @@ class RolesController extends Controller {
     }
 
     public function update(Request $request, $id) {
-        $nombre = $request->get("nombre");
-        $flag = $request->get("flag");
+        $user = JWTAuth::parseToken()->authenticate();
+        if ($user && $user->roles->flag == 'a') {
+            $nombre = $request->get("nombre");
+            $flag = $request->get("flag");
 
-        $role = Roles::find($id);
-        if ($role) {
-            $role->nombre = $nombre;
-            $role->flag = $flag;
+            $role = Roles::find($id);
+            if ($role) {
+                $role->nombre = $nombre;
+                $role->flag = $flag;
 
-            if ($role->update()) return response()->json(200);
+                if ($role->update()) return response()->json(200);
 
-            return response()->json(500);
+                return response()->json(500);
+            }
+
+            return response()->json(404);
         }
-
-        return response()->json(404);
+        return response()->json(401);
     }
 
     public function destroy($id) {
-        $role = Roles::find($id);
-        
-        if ($role) {
-            $role->estado = 0;
-            if ($role->update()) return response()->json(200);
-            return response()->json(500);
-        }
+        $user = JWTAuth::parseToken()->authenticate();
+        if ($user && $user->roles->flag == 'a') {
+            $role = Roles::find($id);
+            
+            if ($role) {
+                $role->estado = 0;
+                if ($role->update()) return response()->json(200);
+                return response()->json(500);
+            }
 
-        return response()->json(404);
+            return response()->json(404);
+        }
+        return response()->json(401);
     }
 }

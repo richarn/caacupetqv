@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Zonas;
+use JWTAuth;
 
 class ZonasController extends Controller {
     
@@ -18,14 +19,18 @@ class ZonasController extends Controller {
     }
 
     public function store(Request $request) {
-        $nombre = $request->get("nombre");
+        $user = JWTAuth::parseToken()->authenticate();
+        if ($user && $user->roles->flag == 'a') {
+            $nombre = $request->get("nombre");
 
-        $zona = new Zonas();
-        $zona->nombre = $nombre;
+            $zona = new Zonas();
+            $zona->nombre = $nombre;
 
-        if ($zona->save()) return response()->json(200);
+            if ($zona->save()) return response()->json(200);
 
-        return response()->json(500);
+            return response()->json(500);
+        }
+        return response()->json(401);
     }
 
     public function show($id) {
@@ -48,31 +53,39 @@ class ZonasController extends Controller {
     }
 
     public function update(Request $request, $id) {
-        $nombre = $request->get("nombre");
+        $user = JWTAuth::parseToken()->authenticate();
+        if ($user && $user->roles->flag == 'a') {
+            $nombre = $request->get("nombre");
 
-        $zona = Zonas::find($id);
-        if ($zona) {
-            $zona->nombre = $nombre;
+            $zona = Zonas::find($id);
+            if ($zona) {
+                $zona->nombre = $nombre;
 
-            if ($zona->update()) return response()->json(200);
+                if ($zona->update()) return response()->json(200);
 
-            return response()->json(500);
+                return response()->json(500);
+            }
+
+            return response()->json(404);
         }
-
-        return response()->json(404);
+        return response()->json(401);
     }
 
     public function destroy($id) {
-        $zona = Zonas::find($id);
+        $user = JWTAuth::parseToken()->authenticate();
+        if ($user && $user->roles->flag == 'a') {
+            $zona = Zonas::find($id);
 
-        if ($zona) {
-            $zona->estado = 0;
-    
-            if ($zona->update()) return response()->json(200);
+            if ($zona) {
+                $zona->estado = 0;
+        
+                if ($zona->update()) return response()->json(200);
 
-            return response()->json(500);
+                return response()->json(500);
+            }
+
+            return response()->json(404);
         }
-
-        return response()->json(404);
+        return response()->json(401);
     }
 }

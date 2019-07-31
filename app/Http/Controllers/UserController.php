@@ -88,7 +88,10 @@ class UserController extends Controller {
         if ($user && $user->roles->flag == 'a') {
             $users = User::where('id', '<>', $user->id)->where('estado', '=', '1')->paginate(20);
             
-            foreach ($users as $temp) { $temp->roles; }
+            foreach ($users as $temp) {
+                $temp->role = $temp->roles;
+                unset($temp->roles);
+            }
 
             return response()->json($users);
         }
