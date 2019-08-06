@@ -18,6 +18,7 @@ class PlantacionesController extends Controller {
                 'planta' => $plantacion->planta,
                 'zona' => $plantacion->zona,
                 'descripcion' => $plantacion->descripcion,
+                'latLng' => $plantacion->latLng,
                 'estado' => $plantacion->estado,
             ]);
         }
@@ -34,12 +35,14 @@ class PlantacionesController extends Controller {
         $idPlanta = $request->get("idPlanta");
         $idZona = $request->get("idZona");
         $descripcion = $request->get("descripcion");
+        $latLng = $request->get("latLng");
 
         $plantacion = new Publicaciones();
         $plantacion->idUsuario = $idUsuario;
         $plantacion->idPlanta = $idPlanta;
         $plantacion->idZona = $idZona;
         $plantacion->descripcion = $descripcion;
+        $plantacion->latLng = $latLng;
 
         if ($plantacion->save()) return response()->json(200);
 
@@ -55,6 +58,7 @@ class PlantacionesController extends Controller {
                 'planta' => $plantacion->planta,
                 'zona' => $plantacion->zona,
                 'descripcion' => $plantacion->descripcion,
+                'latLng' => $plantacion->latLng,
                 'estado' => $plantacion->estado
             ];
             return response()->json($data);
@@ -72,6 +76,7 @@ class PlantacionesController extends Controller {
         $idPlanta = $request->get("idPlanta");
         $idZona = $request->get("idZona");
         $descripcion = $request->get("descripcion");
+        $latLng = $request->get("latLng");
 
         $plantacion = Publicaciones::find($id);
 
@@ -79,6 +84,7 @@ class PlantacionesController extends Controller {
             $plantacion->idPlanta = $idPlanta;
             $plantacion->idZona = $idZona;
             $plantacion->descripcion = $descripcion;
+            $plantacion->latLng = $latLng;
 
             if ($plantacion->update()) return response()->json(200);
 

@@ -12,7 +12,8 @@ class Publicaciones extends Model {
     	'idUsuario',
     	'idPlanta',
     	'idZona',
-    	'descripcion',
+        'descripcion',
+        'latLng',
     	'estado'
     ];
 
