@@ -11,19 +11,16 @@ class PlantacionesController extends Controller {
     public function index() {
         $plantaciones = Publicaciones::where('estado', '=', 1)->paginate(20);
 
-        $result = [];
         foreach ($plantaciones as $plantacion) {
-            array_push($result, [
-                'usuario' => $plantacion->usuario,
-                'planta' => $plantacion->planta,
-                'zona' => $plantacion->zona,
-                'descripcion' => $plantacion->descripcion,
-                'latLng' => $plantacion->latLng,
-                'estado' => $plantacion->estado,
-            ]);
+            $plantacion->usuario;
+            $plantacion->planta;
+            $plantacion->zona;
+            unset($plantacion->idUsuario);
+            unset($plantacion->idPlanta);
+            unset($plantacion->idZona);
         }
 
-        return response()->json($result, 200);
+        return response()->json($plantaciones, 200);
     }
 
     public function create() {
