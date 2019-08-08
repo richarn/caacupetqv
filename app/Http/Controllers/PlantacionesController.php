@@ -41,9 +41,9 @@ class PlantacionesController extends Controller {
         $plantacion->descripcion = $descripcion;
         $plantacion->latLng = $latLng;
 
-        if ($plantacion->save()) return response()->json(200);
+        if ($plantacion->save()) return response()->json(['success' => true, 'status' => 200, 'publication' => $plantacion]);
 
-        return response()->json(500);
+        return response()->json(['success' => false, 'status' => 500]);
     }
 
     public function show($id) {
@@ -58,10 +58,10 @@ class PlantacionesController extends Controller {
                 'latLng' => $plantacion->latLng,
                 'estado' => $plantacion->estado
             ];
-            return response()->json($data);
+            return response()->json(['success' => true, 'status' => 200, 'publicationes' => $data]);
         }
 
-        return response()->json(404);
+        return response()->json(['success' => false, 'status' => 404]);
     }
 
     public function edit($id) {
@@ -83,12 +83,12 @@ class PlantacionesController extends Controller {
             $plantacion->descripcion = $descripcion;
             $plantacion->latLng = $latLng;
 
-            if ($plantacion->update()) return response()->json(200);
+            if ($plantacion->update()) return response()->json(['success' => true, 'status' => 200, 'publication' => $plantacion]);
 
-            return response()->json(500);
+            return response()->json(['success' => false, 'status' => 500]);
         }
 
-        return response()->json(404);
+        return response()->json(['success' => false, 'status' => 404]);
     }
 
     public function destroy($id) {
@@ -97,11 +97,11 @@ class PlantacionesController extends Controller {
         if ($plantacion) {
             $plantacion->estado = 0;
     
-            if ($plantacion->update()) return response()->json(200);
+            if ($plantacion->update()) return response()->json(['success' => true, 'status' => 200]);
 
-            return response()->json(500);
+            return response()->json(['success' => false, 'status' => 500]);
         }
 
-        return response()->json(404);
+        return response()->json(['success' => false, 'status' => 404]);
     }
 }

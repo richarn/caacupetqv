@@ -27,11 +27,11 @@ class RolesController extends Controller {
             $role->nombre = $nombre;
             $role->flag = $flag;
 
-            if ($role->save()) return response()->json(200);
+            if ($role->save()) return response()->json(['success' => true, 'status' => 200, 'role' => $role]);
 
-            return response()->json(500);
+            return response()->json(['success' => false, 'status' => 500]);
         }
-        return response()->json(401);
+        return response()->json(['success' => false, 'status' => 404]);
     }
 
     public function show($id) {
@@ -44,10 +44,10 @@ class RolesController extends Controller {
                 'flag' => $role->flag,
                 'estado' => $role->estado
             ];
-            return response()->json($data);
+            return response()->json(['success' => true, 'status' => 200, 'role' => $role]);
         }
 
-        return response()->json(404);
+        return response()->json(['success' => false, 'status' => 404]);
     }
 
     public function edit($id) {
@@ -65,14 +65,14 @@ class RolesController extends Controller {
                 $role->nombre = $nombre;
                 $role->flag = $flag;
 
-                if ($role->update()) return response()->json(200);
+                if ($role->update()) return response()->json(['success' => true, 'status' => 200, 'role' => $role]);
 
-                return response()->json(500);
+                return response()->json(['success' => false, 'status' => 500]);
             }
 
-            return response()->json(404);
+            return response()->json(['success' => false, 'status' => 404]);
         }
-        return response()->json(401);
+        return response()->json(['success' => false, 'status' => 401]);
     }
 
     public function destroy($id) {
@@ -82,13 +82,13 @@ class RolesController extends Controller {
             
             if ($role) {
                 $role->estado = 0;
-                if ($role->update()) return response()->json(200);
-                return response()->json(500);
+                if ($role->update()) return response()->json(['success' => true, 'status' => 200]);
+                return response()->json(['success' => false, 'status' => 500]);
             }
 
-            return response()->json(404);
+            return response()->json(['success' => false, 'status' => 404]);
         }
-        return response()->json(401);
+        return response()->json(['success' => false, 'status' => 401]);
     }
 
     public function searchByName(Request $request) {

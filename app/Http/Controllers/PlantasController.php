@@ -48,9 +48,9 @@ class PlantasController extends Controller {
             $planta->imagen = $nombreImagen;
         }
 
-        if ($planta->save()) return response()->json(200);
+        if ($planta->save()) return response()->json(['success' => true, 'status' => 200, 'plant' => $planta]);
 
-        return response()->json(500);
+        return response()->json(['success' => false, 'status' => 500]);
     }
 
     public function show($id) {
@@ -64,10 +64,10 @@ class PlantasController extends Controller {
                 'imagen' => $planta->imagen,
                 'estado' => $planta->estado
             ];
-            return response()->json($data);
+            return response()->json(['success' => true, 'status' => 200, 'plants' => $data]);
         }
 
-        return response()->json(404);
+        return response()->json(['success' => false, 'status' => 404]);
     }
 
     public function edit($id) {
@@ -100,12 +100,12 @@ class PlantasController extends Controller {
                 }
             }
 
-            if ($planta->update()) return response()->json(200);
+            if ($planta->update()) return response()->json(['success' => true, 'status' => 200, 'publication' => $plantacion]);
 
-            return response()->json(500);
+            return response()->json(['success' => false, 'status' => 500]);
         }
 
-        return response()->json(404);
+        return response()->json(['success' => false, 'status' => 404]);
     }
 
 
@@ -114,11 +114,11 @@ class PlantasController extends Controller {
         
         if ($planta) {
             $planta->estado = 0;
-            if ($planta->update()) return response()->json(200);
-            return response()->json(500);
+            if ($planta->update()) return response()->json(['success' => true, 'status' => 200]);
+            return response()->json(['success' => false, 'status' => 500]);
         }
 
-        return response()->json(404);
+        return response()->json(['success' => false, 'status' => 404]);
     }
 
     public function searchByName(Request $request) {

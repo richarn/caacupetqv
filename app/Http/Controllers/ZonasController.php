@@ -26,11 +26,11 @@ class ZonasController extends Controller {
             $zona = new Zonas();
             $zona->nombre = $nombre;
 
-            if ($zona->save()) return response()->json(200);
+            if ($zona->save()) return response()->json(['success' => true, 'status' => 200, 'zone' => $zone]);
 
-            return response()->json(500);
+            return response()->json(['success' => false, 'status' => 500]);
         }
-        return response()->json(401);
+        return response()->json(['success' => false, 'status' => 404]);
     }
 
     public function show($id) {
@@ -42,10 +42,10 @@ class ZonasController extends Controller {
                 'nombre' => $zona->nombre,
                 'estado' => $zona->estado
             ];
-            return response()->json($data);
+            return response()->json(['success' => true, 'status' => 200, 'zone' => $zone]);
         }
 
-        return response()->json(404);
+        return response()->json(['success' => false, 'status' => 404]);
     }
 
     public function edit($id) {
@@ -61,14 +61,14 @@ class ZonasController extends Controller {
             if ($zona) {
                 $zona->nombre = $nombre;
 
-                if ($zona->update()) return response()->json(200);
+                if ($zona->update()) return response()->json(['success' => true, 'status' => 200, 'zone' => $zone]);
 
-                return response()->json(500);
+                return response()->json(['success' => false, 'status' => 500]);
             }
 
-            return response()->json(404);
+            return response()->json(['success' => false, 'status' => 404]);
         }
-        return response()->json(401);
+        return response()->json(['success' => false, 'status' => 401]);
     }
 
     public function destroy($id) {
@@ -79,14 +79,14 @@ class ZonasController extends Controller {
             if ($zona) {
                 $zona->estado = 0;
         
-                if ($zona->update()) return response()->json(200);
+                if ($zona->update()) return response()->json(['success' => true, 'status' => 200]);
 
-                return response()->json(500);
+                return response()->json(['success' => false, 'status' => 500]);
             }
 
-            return response()->json(404);
+            return response()->json(['success' => false, 'status' => 404]);
         }
-        return response()->json(401);
+        return response()->json(['success' => false, 'status' => 401]);
     }
 
     public function searchByName(Request $request) {

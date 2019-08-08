@@ -95,7 +95,7 @@ class UserController extends Controller {
 
             return response()->json($users);
         }
-        return response()->json(401);
+        return response()->json(['success' => false, 'status' => 401]);
     }
 
     public function deleteUser($id) {
@@ -104,12 +104,12 @@ class UserController extends Controller {
             $find = User::where('id', '=', $id);
             if ($find) {
                 $find->estado = 0;
-                if ($find->update()) return response()->json(200);
-                return response()->json(500);
+                if ($find->update()) return response()->json(['success' => true, 'status' => 200]);
+                return response()->json(['success' => false, 'status' => 500]);
             }
-            return response()->json(404);
+            return response()->json(['success' => false, 'status' => 404]);
         }
-        return response()->json(401);
+        return response()->json(['success' => false, 'status' => 401]);
     }
 
     public function validateEmail(Request $request) {
