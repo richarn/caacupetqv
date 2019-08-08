@@ -12,6 +12,11 @@ class PlantasController extends Controller {
 
         $plantas = Plantas::where('estado', '=', 1)->paginate(20);
 
+        foreach ($plantas as $planta) {
+            $planta->publicaciones = $planta->publications->count();
+            unset($planta->publications);
+        }
+
         return response()->json($plantas, 200);
     }
 
@@ -114,5 +119,17 @@ class PlantasController extends Controller {
         }
 
         return response()->json(404);
+    }
+
+    public function searchByName(Request $request) {
+        $name = $request->get('name');
+        $plantas = Plantas::where('nombre', 'like', '%'.$name.'%')->paginate(20);
+
+        foreach ($plantas as $planta) {
+            $planta->publicaciones = $planta->publications->count();
+            unset($planta->publications);
+        }
+
+        return response()->json($plantas, 200);
     }
 }

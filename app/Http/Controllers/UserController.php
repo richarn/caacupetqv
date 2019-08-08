@@ -118,4 +118,11 @@ class UserController extends Controller {
         if ($find) return response()->json(200);
         return response()->json(404);
     }
+
+    public function searchByName(Request $request) {
+        $name = $request->get('name');
+        $users = User::where('name', 'like', '%'.$name.'%')->paginate(20);
+
+        return response()->json($users, 200);
+    }
 }

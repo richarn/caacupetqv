@@ -90,4 +90,11 @@ class RolesController extends Controller {
         }
         return response()->json(401);
     }
+
+    public function searchByName(Request $request) {
+        $name = $request->get('name');
+        $roles = Roles::where('nombre', 'like', '%'.$name.'%')->paginate(20);
+
+        return response()->json($roles, 200);
+    }
 }

@@ -28,7 +28,13 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::resource('zonas', 'ZonasController');
     Route::resource('publicaciones', 'PlantacionesController');
     Route::resource('roles', 'RolesController');
+    Route::group(['prefix' => 'search'], function() {
+        Route::get('zonas', 'ZonasController@searchByName');
+        Route::get('roles', 'RolesController@searchByName');
+        Route::get('usuarios', 'UserController@searchByName');
+    });
 });
 
 Route::get('plantas', 'PlantasController@index');
+Route::get('search/plantas', 'PlantasController@searchByName');
 Route::post('validate/email', 'UserController@validateEmail');

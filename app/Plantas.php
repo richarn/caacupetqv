@@ -13,4 +13,8 @@ class Plantas extends Model {
     ];
 
     protected $guarded = [];
+
+    public function publications() {
+        return $this->hasMany('App\Publicaciones', 'idPlanta');
+    }
 }

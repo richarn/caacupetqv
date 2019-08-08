@@ -88,4 +88,11 @@ class ZonasController extends Controller {
         }
         return response()->json(401);
     }
+
+    public function searchByName(Request $request) {
+        $name = $request->get('name');
+        $zonas = Zonas::where('nombre', 'like', '%'.$name.'%')->paginate(20);
+
+        return response()->json($zonas, 200);
+    }
 }
