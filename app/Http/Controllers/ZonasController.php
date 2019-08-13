@@ -26,7 +26,7 @@ class ZonasController extends Controller {
             $zona = new Zonas();
             $zona->nombre = $nombre;
 
-            if ($zona->save()) return response()->json(['success' => true, 'status' => 200, 'zone' => $zone]);
+            if ($zona->save()) return response()->json(['success' => true, 'status' => 200, 'zona' => $zona]);
 
             return response()->json(['success' => false, 'status' => 500]);
         }
@@ -42,7 +42,7 @@ class ZonasController extends Controller {
                 'nombre' => $zona->nombre,
                 'estado' => $zona->estado
             ];
-            return response()->json(['success' => true, 'status' => 200, 'zone' => $zone]);
+            return response()->json(['success' => true, 'status' => 200, 'zona' => $zona]);
         }
 
         return response()->json(['success' => false, 'status' => 404]);
@@ -61,7 +61,7 @@ class ZonasController extends Controller {
             if ($zona) {
                 $zona->nombre = $nombre;
 
-                if ($zona->update()) return response()->json(['success' => true, 'status' => 200, 'zone' => $zone]);
+                if ($zona->update()) return response()->json(['success' => true, 'status' => 200, 'zona' => $zona]);
 
                 return response()->json(['success' => false, 'status' => 500]);
             }

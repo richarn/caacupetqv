@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Plantas;
+use JWTAuth;
+use Storage;
 
 class PlantasController extends Controller {
 
@@ -26,26 +28,21 @@ class PlantasController extends Controller {
 
     public function store(Request $request) {
         // if (!$request->ajax()) return redirect('/');
+        $user = JWTAuth::parseToken()->authenticate();
 
         $nombre = $request->get("nombre");
         $descripcion = $request->get("descripcion");
-        $imagen = $request->file("imagen");
+        // $imagen = $request->file("imagen");
 
+        $images = Storage::disk('api')->files($user->id.'/temp');
+        
         $planta = new Plantas();
         $planta->nombre = $nombre;
         $planta->descripcion = $descripcion;
-
-        if ($request->hasFile('imagen')) {
-            request()->validate([
-                'imagen' => 'image|mimes:jpeg,png,jpg,svg|max:2048',
-            ]);
-
-            // $nombreImagen = $imagen->getClientOriginalName();
-            $randomSring = str_random(20);
-            $extension = $request->imagen->extension();
-            $nombreImagen = $randomSring.'.'.$extension;
-            $imagen->move('api/images', $nombreImagen);
-            $planta->imagen = $nombreImagen;
+        if (count($images) > 0) {
+            $name = str_replace("temp", "plantas", $images[0]);
+            $planta->imagen = $name;
+            Storage::disk('api')->move($images[0], $name);
         }
 
         if ($planta->save()) return response()->json(['success' => true, 'status' => 200, 'plant' => $planta]);
@@ -84,20 +81,11 @@ class PlantasController extends Controller {
             $planta->nombre = $nombre;
             $planta->descripcion = $descripcion;
 
-            if ($request->hasFile('imagen')) {
-                request()->validate([
-                    'imagen' => 'image|mimes:jpeg,png,jpg,svg|max:2048',
-                ]);
-
-                // $nombreImagen = $imagen->getClientOriginalName();
-                if ($imagen->getClientOriginalName() != $planta->imagen) {
-                    $randomSring = str_random(20);
-                    $extension = $request->imagen->extension();
-                    $nombreImagen = $randomSring.'.'.$extension;
-
-                    $imagen->move('api/images', $nombreImagen);
-                    $planta->imagen = $nombreImagen;
-                }
+            $images = Storage::disk('api')->files($user->id.'/temp');
+            if (count($images) > 0) {
+                $name = str_replace("temp", "plantas", $images[0]);
+                $planta->imagen = $name;
+                Storage::disk('api')->move($images[0], $name);
             }
 
             if ($planta->update()) return response()->json(['success' => true, 'status' => 200, 'publication' => $plantacion]);

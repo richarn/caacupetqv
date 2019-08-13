@@ -33,6 +33,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
         Route::get('roles', 'RolesController@searchByName');
         Route::get('usuarios', 'UserController@searchByName');
     });
+    Route::post('upload', 'UploadController@images');
 });
 
 Route::get('plantas', 'PlantasController@index');
