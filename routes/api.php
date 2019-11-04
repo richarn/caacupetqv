@@ -37,5 +37,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 });
 
 Route::get('plantas', 'PlantasController@index');
-Route::get('search/plantas', 'PlantasController@searchByName');
+Route::group(['prefix' => 'search'], function() {
+    Route::get('plantas', 'PlantasController@searchByName');
+    Route::get('publicaciones', 'PlantacionesController@searchBy');
+});
 Route::post('validate/email', 'UserController@validateEmail');

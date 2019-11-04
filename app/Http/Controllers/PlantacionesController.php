@@ -41,7 +41,13 @@ class PlantacionesController extends Controller {
         $plantacion->descripcion = $descripcion;
         $plantacion->latLng = $latLng;
 
-        if ($plantacion->save()) return response()->json(['success' => true, 'status' => 200, 'publication' => $plantacion]);
+        if ($plantacion->save()) {
+            $plantacion->load('usuario')->load('planta')->load('zona');
+            unset($plantacion->idUsuario);
+            unset($plantacion->idPlanta);
+            unset($plantacion->idZona);
+            return response()->json(['success' => true, 'status' => 200, 'publication' => $plantacion]);
+        }
 
         return response()->json(['success' => false, 'status' => 500]);
     }
@@ -83,7 +89,13 @@ class PlantacionesController extends Controller {
             $plantacion->descripcion = $descripcion;
             $plantacion->latLng = $latLng;
 
-            if ($plantacion->update()) return response()->json(['success' => true, 'status' => 200, 'publication' => $plantacion]);
+            if ($plantacion->update()) {
+                $plantacion->load('usuario')->load('planta')->load('zona');
+                unset($plantacion->idUsuario);
+                unset($plantacion->idPlanta);
+                unset($plantacion->idZona);
+                return response()->json(['success' => true, 'status' => 200, 'publication' => $plantacion]);
+            }
 
             return response()->json(['success' => false, 'status' => 500]);
         }
@@ -103,5 +115,30 @@ class PlantacionesController extends Controller {
         }
 
         return response()->json(['success' => false, 'status' => 404]);
+    }
+
+    public function searchBy(Request $request) {
+        $keyword = $request->get('keyword');
+        $plantaciones = Publicaciones::where('descripcion', 'like', '%'.$keyword.'%')
+            ->orWhereHas('usuario', function($q) use ($keyword){
+                return $q->where('name', 'like', '%'.$keyword.'%');
+            })
+            ->orWhereHas('planta', function($q) use ($keyword){
+                return $q->where('nombre', 'like', '%'.$keyword.'%');
+            })
+            ->orWhereHas('zona', function($q) use ($keyword){
+                return $q->where('nombre', 'like', '%'.$keyword.'%');
+            })->get();
+    
+        foreach ($plantaciones as $plantacion) {
+            $plantacion->usuario;
+            $plantacion->planta;
+            $plantacion->zona;
+            unset($plantacion->idUsuario);
+            unset($plantacion->idPlanta);
+            unset($plantacion->idZona);
+        }
+
+        return response()->json($plantaciones, 200);
     }
 }

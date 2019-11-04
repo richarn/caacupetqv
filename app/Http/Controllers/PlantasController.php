@@ -72,6 +72,8 @@ class PlantasController extends Controller {
     }
 
     public function update(Request $request, $id) {
+        $user = JWTAuth::parseToken()->authenticate();
+
         $nombre = $request->get("nombre");
         $descripcion = $request->get("descripcion");
         $imagen = $request->file("imagen");
@@ -88,7 +90,7 @@ class PlantasController extends Controller {
                 Storage::disk('api')->move($images[0], $name);
             }
 
-            if ($planta->update()) return response()->json(['success' => true, 'status' => 200, 'publication' => $plantacion]);
+            if ($planta->update()) return response()->json(['success' => true, 'status' => 200, 'plant' => $planta]);
 
             return response()->json(['success' => false, 'status' => 500]);
         }
